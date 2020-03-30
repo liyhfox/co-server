@@ -1,7 +1,13 @@
+#ifndef DEMO_COMMON_BLOCK_QUEUE_H_
+#define DEMO_COMMON_BLOCK_QUEUE_H_
+
+#include <string.h>
 #include <deque>
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
+
+#include <assert.h>
 
 using std::deque;
 using std::mutex;
@@ -198,6 +204,12 @@ public:
         return true;
     }
 
+    size_t Size() const
+    {
+        // std::lock_guard<mutex> guard(queue_mutex_);
+        return queue_.size();
+    }
+
     bool IsEmpty() const
     {
         unique_lock<mutex> guard(queue_mutex_);
@@ -236,3 +248,5 @@ private:
 
     condition_variable cv_queue_is_not_empty_;
 };
+
+#endif // DEMO_COMMON_BLOCK_QUEUE_H_
